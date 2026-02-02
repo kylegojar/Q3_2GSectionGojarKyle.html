@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Show List of Students Who Signed-Up</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 30px;
+    }
+
+    h1 {
+        font-size: 32px;
+        margin-bottom: 5px;
+    }
+
+    h3 {
+        margin-top: 0;
+        font-weight: normal;
+    }
+
+    a {
+        color: blue;
+        text-decoration: underline;
+        display: inline-block;
+        margin-bottom: 15px;
+    }
+
+    select {
+        padding: 6px;
+        font-size: 14px;
+        margin-left: 10px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+
+    th, td {
+        border: 1px solid #000;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #0a1e8a;
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background-color: #0a1e8a;
+        color: white;
+    }
+
+    .message {
+        margin-top: 20px;
+        font-weight: bold;
+    }
+</style>
+
+<!-- hi maam aline this took me an unimaginably long time, ok thats a bit much but a long time nonetheless -->
+    
+<script>
+    let allSignups = [];
+
+    function loadSignups() {
+        const data = localStorage.getItem("clubSignups");
+
+        if (!data) {
+            document.getElementById("output").innerHTML =
+                "<p class='message'>No sign-ups found.</p>";
+            document.getElementById("total").textContent = "Total Signup : 0";
+            return;
+        }
+
+        allSignups = JSON.parse(data);
+        displaySignups("ALL");
+    }
+
+    // Display sign-ups based on selected club
+    function displaySignups(club) {
+        let filtered = allSignups;
+
+        // Filter only when a specific club is chosen
+        if (club !== "ALL") {
+            filtered = allSignups.filter(s => s.club === club);
+        }
+
+        // If no matching sign-ups
+        if (filtered.length === 0) {
+            document.getElementById("output").innerHTML =
+                "<p class='message'>No sign-ups for this club.</p>";
+            document.getElementById("total").textContent = "Total Signup : 0";
+            return;
+        }
+
+        // Build table output
+        let html = `
+        <table>
+            <tr>
+                <th>Club</th>
+                <th>ID</th>
+                <th>Fullname</th>
+                <th>Grade</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Intern|Extern</th>
+            </tr>`;
+
+        filtered.forEach(s => {
+            html += `
+            <tr>
+                <td>${s.club}</td>
+                <td>${s.studentId}</td>
+                <td>${s.fullName}</td>
+                <td>Grade ${s.grade}</td>
+                <td>${s.email}</td>
+                <td>${s.phone}</td>
+                <td>${s.status}</td>
+            </tr>`;
+        });
+
+        html += "</table>";
+
+        document.getElementById("output").innerHTML = html;
+        document.getElementById("total").textContent =
+            "Total Signup : " + filtered.length;
+    }
+</script>
+</head>
+
+<body onload="loadSignups()">
+
+<h1>Show List of Students Who Signed-Up</h1>
+<h3>by AL Mendoza</h3>
+
+<a href="3rdGradedExercise.html">Back to Signup</a>
+
+<br>
+
+<label>
+Select Your Club
+<select onchange="displaySignups(this.value)">
+    <option value="ALL">-- select an option --</option>
+    <option value="ACTS (Acts Community Transformation)">ACTS (Acts Community Transformation)</option>
+    <option value="Aksis">Aksis</option>
+    <option value="Alianti">Alianti</option>
+    <option value="Alyabo">Alyabo</option>
+    <option value="Art Club">Art Club</option>
+    <option value="Astrosoc">Astrosoc</option>
+    <option value="ATOM">ATOM</option>
+    <option value="Bake Club">Bake Club</option>
+    <option value="Himig Agham">Himig Agham</option>
+    <option value="Math Club">Math Club</option>
+    <option value="Sports Clubs">Sports Clubs</option>
+    <option value="STEM Clubs">STEM Clubs</option>
+</select>
+</label>
+
+<p id="total">Total Signup : 0</p>
+
+<div id="output"></div>
+
+</body>
+</html>
