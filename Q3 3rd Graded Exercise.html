@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Club Application Form</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #4e8cbc;
+        padding: 20px;
+    }
+
+    form {
+        background: white;
+        padding: 20px;
+        max-width: 600px;
+        margin: auto;
+        border-radius: 5px;
+    }
+
+    fieldset {
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+    }
+
+    legend {
+        font-weight: bold;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 6px;
+        margin-top: 4px;
+    }
+
+    input:focus, select:focus, textarea:focus {
+        border: 2px solid blue;
+        outline: none;
+        background-color: #eef;
+    }
+
+    .invalid {
+        border: 2px solid red;
+        background-color: #ffecec;
+    }
+
+    button {
+        padding: 8px 15px;
+        margin-right: 10px;
+    }
+</style>
+
+<script>
+    // Ask user to confirm submission
+    function confirmSubmit() {
+        return confirm("Do you want to submit this application?");
+    }
+
+    // Ask user to confirm reset
+    function confirmReset() {
+        return confirm("Do you want to clear all entered data?");
+    }
+
+    // Simple input validation on blur
+    function checkInput(el) {
+        if (el.value.trim() === "") {
+            el.classList.add("invalid");
+        } else {
+            el.classList.remove("invalid");
+        }
+    }
+
+    // Save form data to localStorage
+    function saveSignup(event) {
+        event.preventDefault(); // Prevent page reload
+
+        if (!confirmSubmit()) return;
+
+        // Create an object for one signup
+        const signup = {
+            studentId: document.getElementById("studentid").value,
+            fullName: document.getElementById("fullname").value,
+            birthday: document.getElementById("birthday").value,
+            email: document.getElementById("email").value,
+            phone: document.getElementById("phone").value,
+            grade: document.getElementById("grade").value,
+            status: document.querySelector('input[name="intern_extern"]:checked')?.value || "",
+            club: document.getElementById("club").value,
+            reason: document.getElementById("reason").value
+        };
+
+        // Retrieve existing signups if any
+        let signups = JSON.parse(localStorage.getItem("clubSignups"));
+
+        // Initialize if none exist
+        if (!signups) {
+            signups = [];
+        }
+
+        // Add new signup
+        signups.push(signup);
+
+        // Save back to localStorage
+        localStorage.setItem("clubSignups", JSON.stringify(signups));
+
+        alert("Signup saved successfully!");
+        document.getElementById("signupForm").reset();
+    }
+
+    // Go to view page
+    function viewSignups() {
+        window.location.href = "viewSignUps.html";
+    }
+</script>
+</head>
+
+<body>
+
+<form id="signupForm" onsubmit="saveSignup(event)" onreset="return confirmReset()">
+
+<fieldset>
+<legend>Personal Information</legend>
+
+<label>
+Student ID:
+<input type="text" id="studentid" required>
+</label>
+
+<label>
+Full Name:
+<input type="text" id="fullname" required>
+</label>
+
+<label>
+Birthday:
+<input type="date" id="birthday" required>
+</label>
+
+<label>
+Email Address:
+<input type="email" id="email" required onblur="checkInput(this)">
+</label>
+</fieldset>
+
+<fieldset>
+<legend>Other Information</legend>
+
+<label>
+Mobile Phone:
+<input type="text" id="phone" required onblur="checkInput(this)">
+</label>
+
+<label>
+Grade Level:
+<select id="grade" required>
+<option value="">-- Select --</option>
+<option value="7">Grade 7</option>
+<option value="8">Grade 8</option>
+<option value="9">Grade 9</option>
+<option value="10">Grade 10</option>
+</select>
+</label>
+
+<label>
+Intern / Extern:
+<input type="radio" name="intern_extern" value="Intern"> Intern
+<input type="radio" name="intern_extern" value="Extern"> Extern
+</label>
+
+<label>
+Preferred Organization / Club:
+<select required>
+<option value=""> Select Club</option>
+<option value="acts">ACTS (Acts Community Transformation)</option>
+<option value="aksis">Aksis</option>
+<option value="alianti">Alianti</option>
+<option value="alyabo">Alyabo</option>
+<option value="art">Art Club</option>
+<option value="astrosoc">Astrosoc</option>
+<option value="atom">ATOM</option>
+<option value="bake">Bake Club</option>
+<option value="balamesa">Balamesa</option>
+<option value="bravura">Bravura</option>
+<option value="buhat">Buhat</option>
+<option value="care">CARE</option>
+<option value="computron">Computron</option>
+<option value="exposure">Exposure</option>
+<option value="flux">Flux</option>
+<option value="habitat">Habitat for Humanity</option>
+<option value="himigagham">Himig Agham</option>
+<option value="invictus">Invictus</option>
+<option value="kamalayan">Kamalayan</option>
+<option value="kislap">Kislap</option>
+<option value="laab">Laab</option>
+<option value="labuyo">Labuyo</option>
+<option value="likha">Likha</option>
+<option value="math">Math Club</option>
+<option value="orient">Orient</option>
+<option value="outdoor">Outdoor Club</option>
+<option value="pallastro">Pallastro</option>
+<option value="physicsyhs">Physics Youth Honor Society/PYHS</option>
+<option value="pisayxyz">Pisay.XYZ</option>
+<option value="sagala">SaGala</option>
+<option value="samapi">SAMAPI</option>
+<option value="sarsplus">SARS+</option>
+<option value="sca">SCA (Student Catholic Action)</option>
+<option value="sert">SERT</option>
+<option value="sightlines">Sightlines</option>
+<option value="silakbo">Silakbo</option>
+<option value="sociospiritual">Socio-Spiritual Clubs</option>
+<option value="sports">Sports Clubs</option>
+<option value="stem">STEM Clubs</option>
+<option value="volant">Volant</option>
+</select>
+</label>
+
+<label>
+Why do you want to join:
+<textarea id="reason" rows="4" required onblur="checkInput(this)"></textarea>
+</label>
+</fieldset>
+
+<button type="submit">Submit</button>
+<button type="reset">Reset</button>
+<button type="button" onclick="viewSignups()">View Sign-Ups</button>
+
+</form>
+
+</body>
+</html>
